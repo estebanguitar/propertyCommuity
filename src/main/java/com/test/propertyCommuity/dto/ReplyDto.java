@@ -1,7 +1,6 @@
 package com.test.propertyCommuity.dto;
 
 import com.test.propertyCommuity.entity.Board;
-import com.test.propertyCommuity.entity.Good;
 import com.test.propertyCommuity.entity.Member;
 import com.test.propertyCommuity.entity.Reply;
 import lombok.Builder;
@@ -9,39 +8,56 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.Date;
+
 @Data
 @ToString
 @NoArgsConstructor
 public class ReplyDto {
     private Long id;
-    private Board boardId;
-//    private Long userId;
+    private Board board;
     private Member member;
     private String content;
-    private Good good;
+    private Date createdAt;
+    private Date updatedAt;
+    private Date deletedAt;
+    private int isDeleted;
+//    private LikesBoard likesBoard;
 
     @Builder
     public ReplyDto(
             Long id,
-            Board boardId,
+            Board board,
             Member member,
             String content,
-            Good good
+            Date createdAt,
+            Date updatedAt,
+            Date deletedAt,
+            int isDeleted
+//            LikesBoard likesBoard
     ) {
         this.id = id;
-        this.boardId = boardId;
+        this.board = board;
         this.member = member;
         this.content = content;
-        this.good = good;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.deletedAt = deletedAt;
+        this.isDeleted = isDeleted;
+//        this.likesBoard = likesBoard;
     }
 
     public Reply toEntity() {
         return Reply.builder()
                 .id(id)
-                .boardId(boardId)
                 .member(member)
+                .board(board)
                 .content(content)
-                .good(good)
+                .createdAt(createdAt)
+                .updatedAt(updatedAt)
+                .deletedAt(deletedAt)
+                .isDeleted(isDeleted)
+//                .good(likesBoard)
                 .build();
     }
 

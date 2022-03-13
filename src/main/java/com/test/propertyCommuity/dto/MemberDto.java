@@ -13,7 +13,6 @@ import lombok.ToString;
 public class MemberDto {
     private Long id;
     private String nickName;
-//    private String accountType;
     private AccountType accountType;
     private String accountId;
     private int quit;
@@ -22,7 +21,6 @@ public class MemberDto {
     public MemberDto(
             Long id,
             String nickName,
-//            String accountType,
             AccountType accountType,
             String accountId,
             int quit

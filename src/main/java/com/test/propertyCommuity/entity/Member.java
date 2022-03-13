@@ -16,29 +16,19 @@ public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false)
-    private String nickName;
-
-//    @Column(name = "account_type", nullable = true)
-//    private String accountType;
-
+    @Column(name = "account_id", nullable = false)
+    private String accountId;
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "account_type")
     private AccountType accountType;
-
-    @Column(name = "account_id", nullable = false)
-    private String accountId;
-
+    @Column(nullable = false)
+    private String nickName;
     private int quit;
-
-
 
     @Builder
     public Member(
             Long id,
             String nickName,
-//            String accountType,
             AccountType accountType,
             String accountId,
             int quit

@@ -17,25 +17,13 @@ public class Reply {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-//    @Column(name = "board_id")
-//    private Long boardId;
-
     @ManyToOne(fetch = FetchType.EAGER) @JoinColumn(name = "board_id")
-    private Board boardId;
-
-//    @Column(name = "user_id")
-//    private Long userId;
+    private Board board;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Member member;
-
     @Column(length = 4000)
     private String content;
-
-
-    @Column(name = "is_deleted")
-    private int isDeleted;
-
     @Column(name = "created_at", updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
@@ -45,36 +33,46 @@ public class Reply {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "deleted_at")
     private Date deletedAt;
-
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "goodId")
-    private Good good;
-//    @OneToMany(mappedBy = "reply", cascade = CascadeType.ALL)
-//    private List<Good> goods = new ArrayList<>();
-
+    @Column(name = "is_deleted")
+    private int isDeleted;
+//    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    @JoinColumn(name = "good_id")
+//    private LikesBoard likesBoard;
 
     @Builder
     public Reply(
             Long id,
-            Board boardId,
+            Board board,
             Member member,
             String content,
-            Good good
+            Date createdAt,
+            Date updatedAt,
+            Date deletedAt,
+            int isDeleted
+//            LikesBoard likesBoard
     ) {
         this.id = id;
-        this.boardId = boardId;
+        this.board = board;
         this.member = member;
         this.content = content;
-        this.good = good;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.deletedAt = deletedAt;
+        this.isDeleted = isDeleted;
+//        this.likesBoard = likesBoard;
     }
 
     public ReplyDto toDto() {
         return ReplyDto.builder()
                 .id(id)
-                .boardId(boardId)
                 .member(member)
+                .board(board)
                 .content(content)
-                .good(good)
+                .createdAt(createdAt)
+                .updatedAt(updatedAt)
+                .deletedAt(deletedAt)
+                .isDeleted(isDeleted)
+//                .good(likesBoard)
                 .build();
     }
 

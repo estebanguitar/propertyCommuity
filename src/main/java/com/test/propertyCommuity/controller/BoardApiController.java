@@ -1,10 +1,9 @@
 package com.test.propertyCommuity.controller;
 
 import com.test.propertyCommuity.dto.BoardDto;
-import com.test.propertyCommuity.dto.GoodDto;
-import com.test.propertyCommuity.dto.MemberDto;
+import com.test.propertyCommuity.dto.LikesDto;
 import com.test.propertyCommuity.service.BoardService;
-import com.test.propertyCommuity.service.GoodService;
+import com.test.propertyCommuity.service.LikesService;
 import com.test.propertyCommuity.util.ApiResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,12 +18,12 @@ import java.util.NoSuchElementException;
 public class BoardApiController {
 
     private BoardService boardService;
-    private GoodService goodService;
+    private LikesService likesBoardService;
 
     @Autowired
-    public BoardApiController(BoardService boardService, GoodService goodService) {
+    public BoardApiController(BoardService boardService, LikesService likesBoardService) {
         this.boardService = boardService;
-        this.goodService = goodService;
+        this.likesBoardService = likesBoardService;
     }
 
     @GetMapping("/board")
@@ -32,7 +31,8 @@ public class BoardApiController {
         ApiResponseUtil<List<BoardDto>> response = null;
 
         try {
-            response = new ApiResponseUtil<List<BoardDto>>(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), boardService.findAll());
+            int isDeleted = 0;
+            response = new ApiResponseUtil<List<BoardDto>>(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), boardService.findAll(isDeleted));
         }catch (Exception e) {
             response = new ApiResponseUtil<List<BoardDto>>(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null);
         } finally {
@@ -47,7 +47,8 @@ public class BoardApiController {
         ApiResponseUtil<BoardDto> response = null;
 
         try {
-            response = new ApiResponseUtil<>(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), boardService.findById(id));
+            int isDeleted = 0;
+            response = new ApiResponseUtil<>(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), boardService.findById(id, isDeleted));
         }catch (NoSuchElementException nee) {
             response = new ApiResponseUtil<>(HttpStatus.NO_CONTENT.value(), nee.getMessage(), null);
         }catch (Exception e) {
@@ -63,16 +64,14 @@ public class BoardApiController {
     @PostMapping(value = "/board")
     public ApiResponseUtil<BoardDto> postBoard(@RequestBody BoardDto dto) {
         ApiResponseUtil<BoardDto> response = null;
-
         try {
-            GoodDto good = GoodDto.builder().goodCnt(0).build();
-            good = goodService.initGood(good);
+            LikesDto likesDto = LikesDto.builder()
+                    .likesCount(0L)
+                    .build();
+            likesDto = likesBoardService.save(likesDto);
 
-            MemberDto member = MemberDto.builder().id(dto.getUserId()).build();
-
-            dto.setMember(member.toEntity());
-            dto.setGood(good.toEntity());
             dto.setCreatedAt(new Date());
+            dto.setLikes(likesDto.toEntity());
             BoardDto newBoard = boardService.saveBoard(dto);
 
             dto.setId(newBoard.getId());
@@ -124,23 +123,23 @@ public class BoardApiController {
         return response;
     }
 
-    @PutMapping("/board/{id}/good")
-    public ApiResponseUtil<BoardDto> postGoodBoard(@PathVariable(name = "id") Long id) {
-        ApiResponseUtil<BoardDto> response = null;
-        try {
-
-
-//            response = new ApiResponseUtil<>(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), boardService.saveBoardGood(id));
-        }catch (NoSuchElementException nee) {
-            response = new ApiResponseUtil<>(HttpStatus.NO_CONTENT.value(), nee.getMessage(), null);
-        }catch (Exception e) {
-            e.printStackTrace();
-            response = new ApiResponseUtil<>(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null);
-        } finally {
-            if(response == null)
-                response = new ApiResponseUtil<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), null);
-        }
-        return response;
-    }
+//    @PutMapping("/board/{id}/good")
+//    public ApiResponseUtil<BoardDto> postGoodBoard(@PathVariable(name = "id") Long id) {
+//        ApiResponseUtil<BoardDto> response = null;
+//        try {
+//
+//
+////            response = new ApiResponseUtil<>(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), boardService.saveBoardGood(id));
+//        }catch (NoSuchElementException nee) {
+//            response = new ApiResponseUtil<>(HttpStatus.NO_CONTENT.value(), nee.getMessage(), null);
+//        }catch (Exception e) {
+//            e.printStackTrace();
+//            response = new ApiResponseUtil<>(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null);
+//        } finally {
+//            if(response == null)
+//                response = new ApiResponseUtil<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), null);
+//        }
+//        return response;
+//    }
 
 }

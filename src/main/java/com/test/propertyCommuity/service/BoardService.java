@@ -19,12 +19,13 @@ public class BoardService {
     @Autowired
     public BoardService(BoardRepository boardRepository) {this.boardRepository = boardRepository;}
 
-    public List<BoardDto> findAll() {
-        return boardRepository.findAll().stream().map(Board::toDto).collect(Collectors.toList());
+    public List<BoardDto> findAll(int isDeleted) {
+//        return boardRepository.findAll().stream().map(Board::toDto).collect(Collectors.toList());
+        return boardRepository.findByIsDeleted(isDeleted).stream().map(Board::toDto).collect(Collectors.toList());
     }
 
-    public BoardDto findById(Long id) throws Exception{
-        return boardRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Not Exist Board")).toDto();
+    public BoardDto findById(Long id, int isDeleted) throws Exception{
+        return boardRepository.findByIdAndIsDeleted(id, isDeleted).orElseThrow(() -> new NoSuchElementException("Not Exist Board")).toDto();
     }
 
     public BoardDto saveBoard(BoardDto dto) throws Exception {
@@ -32,15 +33,10 @@ public class BoardService {
     }
 
     public void deleteBoard(Long id) throws Exception {
-        BoardDto dto = this.findById(id);
+        BoardDto dto = boardRepository.findById(id).get().toDto();
         dto.setIsDeleted(1);
         dto.setDeletedAt(new Date());
         boardRepository.save(dto.toEntity());
     }
-
-//    public BoardDto saveBoardGood(Long id) throws Exception {
-//        BoardDto dto = boardRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Not Exist Board")).toDto();
-//        return boardRepository.save(dto.toEntity()).toDto();
-//    }
 
 }
