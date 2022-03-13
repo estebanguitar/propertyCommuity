@@ -4,6 +4,7 @@ import com.test.propertyCommuity.dto.BoardDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -12,6 +13,7 @@ import java.util.Date;
 @Table(name = "board")
 @Getter
 @NoArgsConstructor
+@ToString
 public class Board {
 
     @Id

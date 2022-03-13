@@ -2,9 +2,7 @@ package com.test.propertyCommuity.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.propertyCommuity.dto.BoardDto;
-import com.test.propertyCommuity.entity.Member;
-import com.test.propertyCommuity.service.BoardService;
-import com.test.propertyCommuity.service.MemberService;
+import com.test.propertyCommuity.dto.ReplyDto;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -18,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import javax.transaction.Transactional;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -26,83 +25,66 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class BoardApiControllerTest {
+class ReplyApiControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
-    private BoardService boardService;
-
-    @Autowired
     private ObjectMapper objectMapper;
-
-
-    @Autowired
-    private MemberService memberService;
 
     @Test
     @Order(1)
-    void getBoardList() throws Exception{
-        mockMvc.perform(get("/api/v1/board"))
+    void list() throws Exception{
+        mockMvc.perform(get("/api/v1/reply/1"))
                 .andExpect(jsonPath("$.statusCode").value(HttpStatus.OK.value()))
-                .andDo(print());
+                .andDo(print())
+        ;
     }
-
-    @Test
-    @Order(2)
-    void getBoard() throws Exception {
-        mockMvc.perform(get("/api/v1/board/1"))
-                .andExpect(jsonPath("$.statusCode").value(HttpStatus.OK.value()))
-                .andDo(print());
-    }
-
-    @Test
-    @Order(3)
-    void postBoard() throws Exception{
-
-        BoardDto dto = BoardDto.builder()
-                .content("testCont")
-                .member(Member.builder().id(1L).build())
-                .title("testTitle")
+    @Test @Order(2)
+    void postReply() throws Exception {
+        ReplyDto dto = ReplyDto.builder()
+                .content("REPLY CONT")
+                .board(BoardDto.builder().id(13L).build().toEntity())
                 .build();
 
         String cont = objectMapper.writeValueAsString(dto);
 
-        mockMvc.perform(post("/api/v1/board")
+        mockMvc.perform(post("/api/v1/reply")
                         .content(cont)
-                        .header("Authorization", "Lessor 2")
+                        .header("Authorization","Lessor 2")
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(jsonPath("$.statusCode").value(HttpStatus.OK.value()))
-                .andDo(print());
+                .andDo(print())
+        ;
     }
 
-    @Test
-    @Order(4)
-    void putBoard() throws Exception{
-        BoardDto dto = BoardDto.builder()
-                .content("testCont")
-                .title("testTitle")
-                .id(1L)
+    @Test @Order(3)
+    void putReply() throws Exception {
+        ReplyDto dto = ReplyDto.builder()
+                .id(6L)
+                .content("REPLY CONT")
+//                .board(BoardDto.builder().id(13L).build().toEntity())
                 .build();
 
         String cont = objectMapper.writeValueAsString(dto);
-        mockMvc.perform(put("/api/v1/board")
+
+        mockMvc.perform(put("/api/v1/reply")
                         .content(cont)
-                        .header("Authorization", "Realtor 1")
+                        .header("Authorization","Lessor 2")
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(jsonPath("$.statusCode").value(HttpStatus.OK.value()))
-                .andDo(print());
+                .andDo(print())
+        ;
     }
 
-    @Test
-    @Order(5)
-    void deleteBoard() throws Exception{
+    @Test @Order(4)
+    void deleteReply() throws Exception {
 
-        mockMvc.perform(delete("/api/v1/board/5")
-                        .header("Authorization", "Realtor 1")
+        mockMvc.perform(delete("/api/v1/reply/6")
+                        .header("Authorization","Lessor 2")
                 )
                 .andExpect(jsonPath("$.statusCode").value(HttpStatus.OK.value()))
                 .andDo(print());

@@ -3,6 +3,7 @@ package com.test.propertyCommuity.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import javax.persistence.Table;
 @Table(name = "account_type")
 @Getter
 @NoArgsConstructor
+@ToString
 public class AccountType {
 
     @Id

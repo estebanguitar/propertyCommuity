@@ -3,6 +3,7 @@ package com.test.propertyCommuity.service;
 import com.test.propertyCommuity.dto.MemberDto;
 import com.test.propertyCommuity.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
@@ -20,6 +21,12 @@ public class MemberService {
     public MemberDto findById(Long id) throws Exception{
         return memberRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Not Exist User")).toDto();
     }
+
+    @Query
+    public boolean isExistUser(MemberDto dto) throws Exception{
+        return memberRepository.findByIdAndAccountTypeAccountTypeEng(dto.getId(), dto.getAccountType().getAccountTypeEng()).isPresent();
+    }
+
 
     public MemberDto saveMember(MemberDto dto) throws Exception{
         return memberRepository.save(dto.toEntity()).toDto();

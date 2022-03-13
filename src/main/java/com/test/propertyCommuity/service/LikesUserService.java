@@ -1,7 +1,9 @@
 package com.test.propertyCommuity.service;
 
+import com.test.propertyCommuity.dto.LikesUserDto;
 import com.test.propertyCommuity.repository.LikesUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,13 +14,19 @@ public class LikesUserService {
     @Autowired
     public LikesUserService(LikesUserRepository likesUserRepository) {this.likesUserRepository = likesUserRepository;}
 
+
+    public LikesUserDto save(LikesUserDto dto) throws DataIntegrityViolationException,Exception{
+        return likesUserRepository.save(dto.toEntity()).toDto();
+    }
+
 //    public List<BoardDto> findAll() {
 //        return boardRepository.findAll().stream().map(Board::toDto).collect(Collectors.toList());
 //    }
 //
-//    public BoardDto findById(Long id) throws Exception{
-//        return boardRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Not Exist Board")).toDto();
-//    }
+    public boolean findByUserId(Long id) throws Exception{
+//        return likesUserRepository.findByUserId(id).isPresent();
+        return likesUserRepository.findByMemberId(id).isPresent();
+    }
 //
 //    public BoardDto saveBoard(BoardDto dto) throws Exception {
 //        return boardRepository.save(dto.toEntity()).toDto();

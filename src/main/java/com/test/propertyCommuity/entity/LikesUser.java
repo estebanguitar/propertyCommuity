@@ -1,9 +1,10 @@
 package com.test.propertyCommuity.entity;
 
-import com.test.propertyCommuity.dto.LikesReplyDto;
+import com.test.propertyCommuity.dto.LikesUserDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @Table(name = "likes_user")
 @Getter
 @NoArgsConstructor
+@ToString
 public class LikesUser {
 
     @Id
@@ -18,22 +20,25 @@ public class LikesUser {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn(name = "likes_id")
+    private Likes likes;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private Member member;
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Reply reply;
 
     @Builder
-    public LikesUser(Member member, Reply reply) {
+    public LikesUser(Likes likes, Member member) {
+        this.likes = likes;
         this.member = member;
-        this.reply = reply;
     }
 
 
-    public LikesReplyDto toDto() {
-        return LikesReplyDto.builder()
+    public LikesUserDto toDto() {
+        return LikesUserDto.builder()
+                .likes(likes)
                 .member(member)
-                .reply(reply)
                 .build();
     }
 

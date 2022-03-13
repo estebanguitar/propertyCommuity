@@ -4,26 +4,28 @@ import com.test.propertyCommuity.entity.*;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @NoArgsConstructor
-public class LikesReplyDto {
+@ToString
+public class LikesUserDto {
 
     private Long id;
+    private Likes likes;
     private Member member;
-    private Reply reply;
 
     @Builder
-    public LikesReplyDto(Member member, Reply reply) {
+    public LikesUserDto(Likes likes, Member member) {
+        this.likes = likes;
         this.member = member;
-        this.reply = reply;
     }
 
 
     public LikesUser toEntity() {
         return LikesUser.builder()
+                .likes(likes)
                 .member(member)
-                .reply(reply)
                 .build();
     }
 

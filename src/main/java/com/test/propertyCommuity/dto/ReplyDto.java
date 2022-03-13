@@ -1,6 +1,7 @@
 package com.test.propertyCommuity.dto;
 
 import com.test.propertyCommuity.entity.Board;
+import com.test.propertyCommuity.entity.Likes;
 import com.test.propertyCommuity.entity.Member;
 import com.test.propertyCommuity.entity.Reply;
 import lombok.Builder;
@@ -22,7 +23,7 @@ public class ReplyDto {
     private Date updatedAt;
     private Date deletedAt;
     private int isDeleted;
-//    private LikesBoard likesBoard;
+    private Likes likes;
 
     @Builder
     public ReplyDto(
@@ -33,8 +34,8 @@ public class ReplyDto {
             Date createdAt,
             Date updatedAt,
             Date deletedAt,
-            int isDeleted
-//            LikesBoard likesBoard
+            int isDeleted,
+            Likes likes
     ) {
         this.id = id;
         this.board = board;
@@ -44,7 +45,7 @@ public class ReplyDto {
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
         this.isDeleted = isDeleted;
-//        this.likesBoard = likesBoard;
+        this.likes = likes;
     }
 
     public Reply toEntity() {
@@ -57,7 +58,7 @@ public class ReplyDto {
                 .updatedAt(updatedAt)
                 .deletedAt(deletedAt)
                 .isDeleted(isDeleted)
-//                .good(likesBoard)
+                .likes(likes)
                 .build();
     }
 

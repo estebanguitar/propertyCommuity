@@ -3,8 +3,6 @@ package com.test.propertyCommuity.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.propertyCommuity.dto.MemberDto;
 import com.test.propertyCommuity.entity.AccountType;
-import com.test.propertyCommuity.service.BoardService;
-import com.test.propertyCommuity.service.MemberService;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -30,13 +28,6 @@ class MemberApiControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
-
-
-    @Autowired
-    private MemberService memberService;
-
-    @Autowired
-    private BoardService boardService;
 
 
     @Test

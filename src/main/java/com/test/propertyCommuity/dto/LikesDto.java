@@ -4,9 +4,11 @@ import com.test.propertyCommuity.entity.Likes;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @NoArgsConstructor
+@ToString
 public class LikesDto {
 
     private Long id;

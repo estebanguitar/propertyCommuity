@@ -4,6 +4,7 @@ import com.test.propertyCommuity.dto.MemberDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @Table(name = "member")
 @Getter
 @NoArgsConstructor
+@ToString
 public class Member {
 
     @Id

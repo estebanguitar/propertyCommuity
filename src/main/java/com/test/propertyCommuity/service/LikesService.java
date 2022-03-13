@@ -5,6 +5,8 @@ import com.test.propertyCommuity.repository.LikesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
+
 @Service
 public class LikesService {
 
@@ -18,9 +20,9 @@ public class LikesService {
 //        return boardRepository.findAll().stream().map(Board::toDto).collect(Collectors.toList());
 //    }
 //
-//    public BoardDto findById(Long id) throws Exception{
-//        return boardRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Not Exist Board")).toDto();
-//    }
+    public LikesDto findById(Long id) throws Exception{
+        return likesRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Not Exist Likes")).toDto();
+    }
 //
     public LikesDto save(LikesDto dto) throws Exception {
         return likesRepository.save(dto.toEntity()).toDto();

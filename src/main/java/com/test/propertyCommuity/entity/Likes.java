@@ -4,6 +4,7 @@ import com.test.propertyCommuity.dto.LikesDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @Table(name = "likes")
 @Getter
 @NoArgsConstructor
+@ToString
 public class Likes {
 
     @Id

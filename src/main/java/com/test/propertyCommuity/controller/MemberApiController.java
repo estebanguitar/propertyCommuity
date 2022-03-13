@@ -47,7 +47,7 @@ public class MemberApiController {
         try {
             MemberDto newMember = memberService.saveMember(dto);
             dto.setId(newMember.getId());
-            response = new ApiResponseUtil<>(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), dto);
+            response = new ApiResponseUtil<>(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), null);
         }catch (Exception e) {
             e.printStackTrace();
             response = new ApiResponseUtil<MemberDto>(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null);

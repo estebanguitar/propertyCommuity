@@ -20,12 +20,15 @@ public class BoardService {
     public BoardService(BoardRepository boardRepository) {this.boardRepository = boardRepository;}
 
     public List<BoardDto> findAll(int isDeleted) {
-//        return boardRepository.findAll().stream().map(Board::toDto).collect(Collectors.toList());
         return boardRepository.findByIsDeleted(isDeleted).stream().map(Board::toDto).collect(Collectors.toList());
     }
 
     public BoardDto findById(Long id, int isDeleted) throws Exception{
         return boardRepository.findByIdAndIsDeleted(id, isDeleted).orElseThrow(() -> new NoSuchElementException("Not Exist Board")).toDto();
+    }
+
+    public boolean isUsersBoard(Long userId, Long boardId) {
+        return boardRepository.findByMemberIdAndId(userId, boardId).isPresent();
     }
 
     public BoardDto saveBoard(BoardDto dto) throws Exception {
