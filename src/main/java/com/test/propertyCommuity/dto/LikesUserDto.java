@@ -1,6 +1,8 @@
 package com.test.propertyCommuity.dto;
 
-import com.test.propertyCommuity.entity.*;
+import com.test.propertyCommuity.entity.Likes;
+import com.test.propertyCommuity.entity.LikesUser;
+import com.test.propertyCommuity.entity.Member;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;

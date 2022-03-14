@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "likes")
@@ -22,11 +23,14 @@ public class Likes {
     @Column(name = "likes_count")
     private Long likesCount;
 
+//    @OneToMany(mappedBy = "likes")
+//    private List<LikesUser> likesUserList;
 
     @Builder
-    public Likes(Long id, Long likesCount) {
+    public Likes(Long id, Long likesCount,List<LikesUser> likesUserList) {
         this.id = id;
         this.likesCount = likesCount;
+//        this.likesUserList = likesUserList;
     }
 
 
@@ -34,6 +38,7 @@ public class Likes {
         return LikesDto.builder()
                 .id(id)
                 .likesCount(likesCount)
+//                .likesUserList(likesUserList)
                 .build();
     }
 

@@ -1,7 +1,6 @@
 package com.test.propertyCommuity.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.test.propertyCommuity.dto.BoardDto;
 import com.test.propertyCommuity.dto.ReplyDto;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -16,7 +15,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import javax.transaction.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -45,7 +43,7 @@ class ReplyApiControllerTest {
     void postReply() throws Exception {
         ReplyDto dto = ReplyDto.builder()
                 .content("REPLY CONT")
-                .board(BoardDto.builder().id(13L).build().toEntity())
+//                .board(BoardDto.builder().id(13L).build().toEntity())
                 .build();
 
         String cont = objectMapper.writeValueAsString(dto);

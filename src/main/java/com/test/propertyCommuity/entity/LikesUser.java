@@ -28,6 +28,9 @@ public class LikesUser {
     @JoinColumn(name = "user_id")
     private Member member;
 
+//    @ManyToOne()
+//    private Board board;
+
     @Builder
     public LikesUser(Likes likes, Member member) {
         this.likes = likes;

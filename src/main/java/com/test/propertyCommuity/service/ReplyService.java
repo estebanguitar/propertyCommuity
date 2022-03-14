@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @Service
 public class ReplyService {
@@ -22,9 +21,8 @@ public class ReplyService {
     }
 
 
-    public List<ReplyDto> findAll(int isDelete, Long boardId) {
-//        return replyRepository.findByIsDeleted(isDelete).stream().map(Reply::toDto).collect(Collectors.toList());
-        return replyRepository.findByIsDeletedAndBoardId(isDelete, boardId).stream().map(Reply::toDto).collect(Collectors.toList());
+    public List<Reply> findAll(int isDelete, Long boardId) {
+        return replyRepository.findByIsDeletedAndBoardId(isDelete, boardId);
     }
 
     public ReplyDto findById(Long id, int isDeleted) throws Exception{
@@ -35,8 +33,8 @@ public class ReplyService {
     }
 
 
-    public ReplyDto save(ReplyDto dto) throws Exception{
-        return replyRepository.save(dto.toEntity()).toDto();
+    public ReplyDto save(Reply entity) throws Exception{
+        return replyRepository.save(entity).toDto();
     }
 
     public void delete(Long id) throws Exception{

@@ -1,10 +1,7 @@
 package com.test.propertyCommuity.entity;
 
 import com.test.propertyCommuity.dto.ReplyDto;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -12,6 +9,7 @@ import java.util.Date;
 @Entity
 @Table(name = "reply")
 @Getter
+@Setter
 @NoArgsConstructor
 @ToString
 public class Reply {
@@ -19,7 +17,8 @@ public class Reply {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne(fetch = FetchType.EAGER) @JoinColumn(name = "board_id", updatable = false, nullable = false)
+//    @ManyToOne(fetch = FetchType.EAGER) @JoinColumn(name = "board_id", updatable = false, nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "board_id", updatable = false, nullable = false)
     private Board board;
     @ManyToOne
     @JoinColumn(name = "user_id", updatable = false, nullable = false)
@@ -68,7 +67,7 @@ public class Reply {
         return ReplyDto.builder()
                 .id(id)
                 .member(member)
-                .board(board)
+//                .board(board)
                 .content(content)
                 .createdAt(createdAt)
                 .updatedAt(updatedAt)

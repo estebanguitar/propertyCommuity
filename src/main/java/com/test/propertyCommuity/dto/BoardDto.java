@@ -2,6 +2,7 @@ package com.test.propertyCommuity.dto;
 
 import com.test.propertyCommuity.entity.Board;
 import com.test.propertyCommuity.entity.Likes;
+import com.test.propertyCommuity.entity.LikesUser;
 import com.test.propertyCommuity.entity.Member;
 import lombok.Builder;
 import lombok.Data;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @ToString
@@ -23,6 +25,8 @@ public class BoardDto {
     private Date deletedAt;
     private Likes likes;
     private int isDeleted;
+    private List<LikesUser> likesUsers;
+
     @Builder
     public BoardDto(
             Long id,
@@ -33,7 +37,8 @@ public class BoardDto {
             Date createdAt,
             Date updatedAt,
             Date deletedAt,
-            Likes likes
+            Likes likes,
+            List<LikesUser> likesUsers
     ) {
         this.id = id;
         this.member = member;
@@ -44,6 +49,8 @@ public class BoardDto {
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
         this.likes = likes;
+        this.likesUsers = likesUsers;
+
     }
 
     public Board toEntity() {
@@ -57,6 +64,7 @@ public class BoardDto {
                 .updatedAt(updatedAt)
                 .deletedAt(deletedAt)
                 .likes(likes)
+                .likesUsers(likesUsers)
                 .build();
     }
 

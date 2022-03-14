@@ -21,22 +21,29 @@ import java.util.Optional;
 public class BoardApiController {
 
     private BoardService boardService;
-    private LikesService likesBoardService;
+    private LikesService likesService;
 
     @Autowired
-    public BoardApiController(BoardService boardService, LikesService likesBoardService) {
+    public BoardApiController(BoardService boardService, LikesService likesService) {
         this.boardService = boardService;
-        this.likesBoardService = likesBoardService;
+        this.likesService = likesService;
     }
 
     @GetMapping("/board")
-    public ApiResponseUtil<List<BoardDto>> list() {
+    public ApiResponseUtil<List<BoardDto>> list(HttpServletRequest request) {
         ApiResponseUtil<List<BoardDto>> response = null;
 
         try {
+
+            if(Optional.ofNullable(request.getAttribute("userId")).isPresent()) {
+                BoardDto dto = this.setBoardMember(BoardDto.builder().build(), request);
+            }
             int isDeleted = 0;
-            response = new ApiResponseUtil<List<BoardDto>>(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), boardService.findAll(isDeleted));
+            List<BoardDto> newDto = boardService.findAll(isDeleted);
+
+            response = new ApiResponseUtil<List<BoardDto>>(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), newDto);
         }catch (Exception e) {
+            e.printStackTrace();
             response = new ApiResponseUtil<List<BoardDto>>(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null);
         } finally {
             if(response == null)
@@ -53,8 +60,10 @@ public class BoardApiController {
             int isDeleted = 0;
             response = new ApiResponseUtil<>(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), boardService.findById(id, isDeleted));
         }catch (NoSuchElementException nee) {
+            nee.printStackTrace();
             response = new ApiResponseUtil<>(HttpStatus.NO_CONTENT.value(), nee.getMessage(), null);
         }catch (Exception e) {
+            e.printStackTrace();
             response = new ApiResponseUtil<>(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null);
         } finally {
             if(response == null)
@@ -73,7 +82,7 @@ public class BoardApiController {
             LikesDto likesDto = LikesDto.builder()
                     .likesCount(0L)
                     .build();
-            likesDto = likesBoardService.save(likesDto);
+            likesDto = likesService.save(likesDto);
 
             dto.setCreatedAt(new Date());
             dto.setLikes(likesDto.toEntity());
@@ -139,11 +148,9 @@ public class BoardApiController {
     }
 
     private BoardDto setBoardMember(BoardDto dto, HttpServletRequest request) throws Exception{
-        String userId = String.valueOf(request.getAttribute("userId"));
-        if(!Optional.ofNullable(userId).isPresent()) throw new Exception();
-        dto.setMember(Member.builder().id(Long.parseLong(userId)).build());
-
-
+        Optional opt = Optional.ofNullable(request.getAttribute("userId"));
+        if(!opt.isPresent()) throw new Exception();
+        dto.setMember(Member.builder().id(Long.parseLong(opt.get().toString())).build());
         return dto;
     }
     private void valid(BoardDto dto) throws Exception{

@@ -1,10 +1,14 @@
 package com.test.propertyCommuity.service;
 
 import com.test.propertyCommuity.dto.LikesUserDto;
+import com.test.propertyCommuity.entity.LikesUser;
 import com.test.propertyCommuity.repository.LikesUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class LikesUserService {
@@ -19,12 +23,11 @@ public class LikesUserService {
         return likesUserRepository.save(dto.toEntity()).toDto();
     }
 
-//    public List<BoardDto> findAll() {
-//        return boardRepository.findAll().stream().map(Board::toDto).collect(Collectors.toList());
-//    }
+    public List<LikesUserDto> findAll() {
+        return likesUserRepository.findAll().stream().map(LikesUser::toDto).collect(Collectors.toList());
+    }
 //
     public boolean findByUserId(Long id) throws Exception{
-//        return likesUserRepository.findByUserId(id).isPresent();
         return likesUserRepository.findByMemberId(id).isPresent();
     }
 //

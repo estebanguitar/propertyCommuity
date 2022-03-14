@@ -8,6 +8,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "board")
@@ -40,6 +41,9 @@ public class Board {
     @Column(name = "is_deleted")
     private int isDeleted;
 
+    @OneToMany(mappedBy = "likes")
+    private List<LikesUser> likesUsers;
+
     @Builder
     public Board(
             Long id,
@@ -50,7 +54,8 @@ public class Board {
             Date createdAt,
             Date updatedAt,
             Date deletedAt,
-            Likes likes
+            Likes likes,
+            List<LikesUser> likesUsers
     ) {
         this.id = id;
         this.member = member;
@@ -61,6 +66,7 @@ public class Board {
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
         this.likes = likes;
+        this.likesUsers = likesUsers;
     }
 
     public BoardDto toDto() {
@@ -74,6 +80,7 @@ public class Board {
                 .updatedAt(updatedAt)
                 .deletedAt(deletedAt)
                 .likes(likes)
+                .likesUsers(likesUsers)
                 .build();
     }
 

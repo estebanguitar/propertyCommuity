@@ -1,6 +1,5 @@
 package com.test.propertyCommuity.dto;
 
-import com.test.propertyCommuity.entity.Board;
 import com.test.propertyCommuity.entity.Likes;
 import com.test.propertyCommuity.entity.Member;
 import com.test.propertyCommuity.entity.Reply;
@@ -16,7 +15,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class ReplyDto {
     private Long id;
-    private Board board;
+//    private Board board;
     private Member member;
     private String content;
     private Date createdAt;
@@ -28,7 +27,7 @@ public class ReplyDto {
     @Builder
     public ReplyDto(
             Long id,
-            Board board,
+//            Board board,
             Member member,
             String content,
             Date createdAt,
@@ -38,7 +37,7 @@ public class ReplyDto {
             Likes likes
     ) {
         this.id = id;
-        this.board = board;
+//        this.board = board;
         this.member = member;
         this.content = content;
         this.createdAt = createdAt;
@@ -52,7 +51,7 @@ public class ReplyDto {
         return Reply.builder()
                 .id(id)
                 .member(member)
-                .board(board)
+//                .board(board)
                 .content(content)
                 .createdAt(createdAt)
                 .updatedAt(updatedAt)
