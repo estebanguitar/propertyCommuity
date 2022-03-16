@@ -21,26 +21,26 @@ public class LikesUser {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "likes_id")
-    private Likes likes;
+    @JoinColumn(name = "board_id")
+    private Board board;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Member member;
 
-//    @ManyToOne()
-//    private Board board;
 
     @Builder
-    public LikesUser(Likes likes, Member member) {
-        this.likes = likes;
+    public LikesUser(Long id, Board board, Member member) {
+        this.id = id;
+        this.board = board;
         this.member = member;
     }
 
 
     public LikesUserDto toDto() {
         return LikesUserDto.builder()
-                .likes(likes)
+                .id(id)
+                .board(board)
                 .member(member)
                 .build();
     }

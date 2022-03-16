@@ -8,7 +8,6 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "board")
@@ -20,9 +19,11 @@ public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "parent_id", updatable = false)
+    private Long parentId;
     @ManyToOne @JoinColumn(name = "user_id", updatable = false)
     private Member member;
-    @Column(length = 4000, nullable = false)
+    @Column(length = 4000)
     private String title;
     @Column(length = 4000, nullable = false)
     private String content;
@@ -35,18 +36,17 @@ public class Board {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "deleted_at")
     private Date deletedAt;
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "likes_id", updatable = false)
-    private Likes likes;
+//    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+//    @JoinColumn(name = "likes_id", updatable = false)
+//    private Likes likes;
+    private Long likes;
     @Column(name = "is_deleted")
     private int isDeleted;
-
-    @OneToMany(mappedBy = "likes")
-    private List<LikesUser> likesUsers;
 
     @Builder
     public Board(
             Long id,
+            Long parentId,
             Member member,
             String title,
             String content,
@@ -54,10 +54,10 @@ public class Board {
             Date createdAt,
             Date updatedAt,
             Date deletedAt,
-            Likes likes,
-            List<LikesUser> likesUsers
+            Long likes
     ) {
         this.id = id;
+        this.parentId = parentId;
         this.member = member;
         this.title = title;
         this.content = content;
@@ -66,12 +66,12 @@ public class Board {
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
         this.likes = likes;
-        this.likesUsers = likesUsers;
     }
 
     public BoardDto toDto() {
         return BoardDto.builder()
                 .id(id)
+                .parentId(parentId)
                 .member(member)
                 .title(title)
                 .content(content)
@@ -80,7 +80,6 @@ public class Board {
                 .updatedAt(updatedAt)
                 .deletedAt(deletedAt)
                 .likes(likes)
-                .likesUsers(likesUsers)
                 .build();
     }
 

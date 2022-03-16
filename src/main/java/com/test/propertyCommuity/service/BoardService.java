@@ -23,6 +23,14 @@ public class BoardService {
         return boardRepository.findByIsDeleted(isDeleted).stream().map(Board::toDto).collect(Collectors.toList());
     }
 
+    public BoardDto findByIdAndMemberIdAndParentId(Long id, Long userId, Long parentId) throws Exception{
+        return boardRepository.findByIdAndMemberIdAndParentId(id, userId, parentId).toDto();
+    }
+
+    public List<BoardDto> findAllReply(int isDeleted, Long parentId) {
+        return boardRepository.findByIsDeletedAndParentId(isDeleted, parentId).stream().map(Board::toDto).collect(Collectors.toList());
+    }
+
     public BoardDto findById(Long id, int isDeleted) throws Exception{
         return boardRepository.findByIdAndIsDeleted(id, isDeleted).orElseThrow(() -> new NoSuchElementException("Not Exist Board")).toDto();
     }

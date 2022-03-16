@@ -1,6 +1,6 @@
 package com.test.propertyCommuity.dto;
 
-import com.test.propertyCommuity.entity.Likes;
+import com.test.propertyCommuity.entity.Board;
 import com.test.propertyCommuity.entity.LikesUser;
 import com.test.propertyCommuity.entity.Member;
 import lombok.Builder;
@@ -14,19 +14,21 @@ import lombok.ToString;
 public class LikesUserDto {
 
     private Long id;
-    private Likes likes;
+    private Board board;
     private Member member;
 
     @Builder
-    public LikesUserDto(Likes likes, Member member) {
-        this.likes = likes;
+    public LikesUserDto(Long id, Board board, Member member) {
+        this.id = id;
+        this.board = board;
         this.member = member;
     }
 
 
     public LikesUser toEntity() {
         return LikesUser.builder()
-                .likes(likes)
+                .id(id)
+                .board(board)
                 .member(member)
                 .build();
     }

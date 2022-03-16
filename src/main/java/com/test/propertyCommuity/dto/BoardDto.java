@@ -1,8 +1,6 @@
 package com.test.propertyCommuity.dto;
 
 import com.test.propertyCommuity.entity.Board;
-import com.test.propertyCommuity.entity.Likes;
-import com.test.propertyCommuity.entity.LikesUser;
 import com.test.propertyCommuity.entity.Member;
 import lombok.Builder;
 import lombok.Data;
@@ -10,26 +8,26 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.Date;
-import java.util.List;
 
 @Data
 @ToString
 @NoArgsConstructor
 public class BoardDto {
     private Long id;
+    private Long parentId;
     private Member member;
     private String title;
     private String content;
     private Date createdAt;
     private Date updatedAt;
     private Date deletedAt;
-    private Likes likes;
+    private Long likes;
     private int isDeleted;
-    private List<LikesUser> likesUsers;
 
     @Builder
     public BoardDto(
             Long id,
+            Long parentId,
             Member member,
             String title,
             String content,
@@ -37,10 +35,10 @@ public class BoardDto {
             Date createdAt,
             Date updatedAt,
             Date deletedAt,
-            Likes likes,
-            List<LikesUser> likesUsers
+            Long likes
     ) {
         this.id = id;
+        this.parentId = parentId;
         this.member = member;
         this.title = title;
         this.content = content;
@@ -49,13 +47,12 @@ public class BoardDto {
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
         this.likes = likes;
-        this.likesUsers = likesUsers;
-
     }
 
     public Board toEntity() {
         return Board.builder()
                 .id(id)
+                .parentId(parentId)
                 .member(member)
                 .title(title)
                 .content(content)
@@ -64,7 +61,6 @@ public class BoardDto {
                 .updatedAt(updatedAt)
                 .deletedAt(deletedAt)
                 .likes(likes)
-                .likesUsers(likesUsers)
                 .build();
     }
 
