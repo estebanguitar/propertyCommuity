@@ -1,70 +1,7 @@
-# 부동산 커뮤니티
+# JPA 게시판
 ## H2 DATABASE
 url : jdbc:h2:tcp://localhost/~/test
 username : sa
-
-### DATABASE setup
-유저관련 정보 셋업을 위한 Rest API 구현
-
-    DROP TABLE IF EXISTS likes_user;
-    DROP TABLE IF EXISTS likes;
-    DROP TABLE IF EXISTS reply;
-    DROP TABLE IF EXISTS board;
-    DROP TABLE IF EXISTS member;
-    DROP TABLE IF EXISTS account_type;
-
-    /* 멤버 권한명 테이블 */
-    create table account_type (
-		account_type_eng varchar(100) not null,
-        account_type_kor varchar(100) not null,
-        primary key (account_type_eng)
-    );
-
-    /* 기본 데이터 셋업 */
-	insert into account_type values('REALTOR', '공인중개사');
-	insert into account_type values('LESSOR', '임대인');
-	insert into account_type values('LESSEE', '임차인');
-
-    /* 유저 정보 테이블 */
-    create table member (
-		id bigint auto_increment,
-		account_id varchar(255) not null,
-		account_type varchar(100),        
-        nick_name varchar(255) not null,
-        quit integer default 0,
-        primary key (id),
-		foreign key (account_type) references account_type(account_type_eng)
-    );
-
-    /* 기본 데이터 셋업 */
-	insert into member values(1, 'realtorId', 'REALTOR', 'realtorNickname', 0);
-	insert into member values(2, 'lessorId', 'LESSOR', 'lessorNickname', 0);
-	insert into member values(3, 'lesseeId', 'LESSEE', 'lesseeNickname', 0);
-
-    /* 게시판 및 댓글 테이블*/
-    create table board (
-		id bigint auto_increment,
-		parent_id bigint,
-		user_id bigint not null,		
-		title varchar(4000),
-        content varchar(4000) not null,
-        created_at timestamp,
-        updated_at timestamp,		
-        deleted_at timestamp,
-		likes bigint,
-		is_deleted integer default 0,
-        primary key (id),
-		foreign key (user_id) references member(id)
-    );
-    /* 좋아요 정보 테이블 */
-	create table likes_user (
-		id bigint auto_increment,
-        board_id bigint,
-		user_id bigint,
-        primary key (id),
-		foreign key (user_id) references member(id),
-		foreign key (board_id) references board(id)			
-    );
 
 
 ## 검증
